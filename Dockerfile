@@ -15,8 +15,7 @@ WORKDIR /downloads
 # Install build environment
 RUN apt install -y chrony ntpdate curl build-essential
 # Add ROS repo
-# UNDERSTAND THE KEY AUTHENTICATION ISSUE
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 RUN echo "deb http://packages.ros.org/ros/ubuntu ${name_os_version} main" > /etc/apt/sources.list.d/ros-latest.list
 RUN apt update -y
 # Install ros-desktop-full version of Noetic
@@ -24,7 +23,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-${name_ros_version}-deskto
 # Install RQT & Gazebo
 RUN apt install -y ros-${name_ros_version}-rqt-* ros-${name_ros_version}-gazebo-*
 # Environment setup
-RUN source /opt/ros/${name_ros_version}/setup.sh
 RUN apt install -y python3-rosinstall python3-rosinstall-generator python3-wstool build-essential git
 # Install rosdep and update
 RUN apt install python3-rosdep
