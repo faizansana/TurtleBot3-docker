@@ -7,7 +7,7 @@ ENV name_ros_version="noetic"
 ENV name_catkin_workspace="catkin_ws"
 ENV TZ=Etc/GMT-4
 
-RUN apt update && apt upgrade
+RUN apt update && apt upgrade -y
 # Install general tools
 RUN apt install -y wget curl
 WORKDIR /downloads
