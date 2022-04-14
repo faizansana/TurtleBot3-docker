@@ -9,8 +9,8 @@ ENV TZ=Etc/GMT-4
 
 RUN apt update && apt upgrade -y
 # Install general tools
-RUN apt install -y wget curl
 WORKDIR /downloads
+RUN apt install -y wget curl
 
 # Install build environment
 RUN apt install -y chrony ntpdate curl build-essential
