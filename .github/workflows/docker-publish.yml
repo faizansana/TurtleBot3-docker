@@ -1,31 +1,49 @@
-name: Push to Docker Hub
+---
+name: Docker Build
 
 on:
   push:
     branches:
-      - 'main'
+      - main
+    paths-ignore:
+      - 'README.md'
+      - '.deepsource.toml'
+      - 'setup_ros_env.sh'
+  pull_request:
+    paths:
+      - 'README.md'
+      - '.deepsource.toml'
+      - 'setup_ros_env.sh'
+
+# cancel any previously-started, yet still active runs of this workflow on the same branch
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout repo
-        uses: actions/checkout@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Build and push container
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: faizansana/test-ros-noetic-turtlebot3-github:latest
+  call-docker-build:
+
+    name: Call Docker Build
+
+    uses: faizansana/docker-build-workflow/.github/workflows/reusable-docker-build.yaml@main
+
+    permissions:
+      contents: read
+      packages: write # needed to push docker image to ghcr.io
+      pull-requests: write # needed to create and update comments in PRs
+    
+    secrets:
+
+      # Only needed if with:dockerhub-enable is true below
+      # https://hub.docker.com/settings/security
+      dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    with:
+      
+      dockerhub-enable: true
+      ghcr-enable: true
+
+      image-names: |
+        ghcr.io/${{ github.repository }}
+        docker.io/${{ github.repository }}
