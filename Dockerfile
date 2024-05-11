@@ -35,7 +35,7 @@ RUN source /opt/ros/$name_ros_version/setup.sh && cd $HOME/$name_catkin_workspac
 COPY ./setup_ros_env.sh /downloads/setup_ros_env.sh
 RUN bash /downloads/setup_ros_env.sh
 
-RUN apt-get install -y ros-noetic-joy ros-noetic-teleop-twist-joy \
+RUN apt-get install -y --no-install-recommends ros-noetic-joy ros-noetic-teleop-twist-joy \
   ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc \
   ros-noetic-rgbd-launch ros-noetic-rosserial-arduino \
   ros-noetic-rosserial-python ros-noetic-rosserial-client \
