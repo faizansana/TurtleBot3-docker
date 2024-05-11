@@ -13,7 +13,7 @@ RUN apt-get install -y wget curl
 WORKDIR /downloads
 
 # Install build environment
-RUN apt-get install -y --no-install-recommends chrony ntpdate curl build-essential
+RUN apt-get install -y --no-install-recommends chrony ntpdate curl build-essential gnupg
 # Add ROS repo
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 RUN echo "deb http://packages.ros.org/ros/ubuntu ${name_os_version} main" > /etc/apt/sources.list.d/ros-latest.list
