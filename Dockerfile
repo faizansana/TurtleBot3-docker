@@ -13,19 +13,19 @@ RUN apt-get install -y wget curl
 WORKDIR /downloads
 
 # Install build environment
-RUN apt-get install -y chrony ntpdate curl build-essential
+RUN apt-get install -y --no-install-recommends chrony ntpdate curl build-essential
 # Add ROS repo
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 RUN echo "deb http://packages.ros.org/ros/ubuntu ${name_os_version} main" > /etc/apt/sources.list.d/ros-latest.list
 RUN apt-get update -y
 # Install ros-desktop-full version of Noetic
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-${name_ros_version}-desktop-full
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-${name_ros_version}-desktop-full
 # Install RQT & Gazebo
 RUN apt-get install -y ros-${name_ros_version}-rqt-* ros-${name_ros_version}-gazebo-*
 # Environment setup
-RUN apt-get install -y python3-rosinstall python3-rosinstall-generator python3-wstool build-essential git
+RUN apt-get install -y --no-install-recommends python3-rosinstall python3-rosinstall-generator python3-wstool build-essential git
 # Install rosdep and update
-RUN apt-get install python3-rosdep
+RUN apt-get install -y --no-install-recommends python3-rosdep
 RUN rosdep init && rosdep update
 RUN mkdir -p $HOME/${name_catkin_workspace}/src
 RUN source /opt/ros/$name_ros_version/setup.sh && cd $HOME/${name_catkin_workspace}/src && catkin_init_workspace
@@ -45,6 +45,6 @@ RUN apt-get install -y --no-install-recommends ros-noetic-joy ros-noetic-teleop-
   ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers
 
 # Install TurtleBot3 packages
-RUN apt-get install -y ros-noetic-dynamixel-sdk \
+RUN apt-get install -y --no-install-recommends ros-noetic-dynamixel-sdk \
     ros-noetic-turtlebot3-msgs \
     ros-noetic-turtlebot3
